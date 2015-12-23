@@ -1,3 +1,7 @@
 .selected {
     border: 5px solid #3498db;
 }
+
+.ilImage {
+    margin-top: 5px;
+}
