@@ -68,7 +68,9 @@ ImageLibrary.create = function(element) {
             ImageLibrary.selectImage($(this));
         });
 
-        ele.on('click', '#ilUpload', ImageLibrary.uploadImage());
+        ele.on('click', '#ilUpload', function() {
+            ImageLibrary.uploadImage();
+        });
 
         ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input + ImageLibrary.HTML.uploadModal);
 
@@ -140,6 +142,5 @@ ImageLibrary.selectImage = function(image) {
 };
 
 ImageLibrary.uploadImage = function() {
-    //Close the current Image Library modal
-    $('#ilModal').modal('show', false);
+    
 };
