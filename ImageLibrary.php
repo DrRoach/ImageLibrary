@@ -14,6 +14,11 @@ function getImages($setup) {
     //Get the directory to get the images from
     $dir = htmlentities($setup['ImageDirectory'] ? : '/images');
 
+    //Add a slash to the start of the dir path if there isn't one already
+    if (substr($dir, 0, 1) != '/') {
+        $dir = '/' . $dir;
+    }
+
     //Make sure no directory traversal can happen
     $dir = __DIR__ . str_replace('..', '', $dir);
 
