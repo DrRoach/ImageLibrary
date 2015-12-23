@@ -33,7 +33,7 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                                     "<div class='modal-body'>" +
                                     "</div>" +
                                     "<div class='modal-footer'>" +
-                                        "<!--<button type='button' class='btn btn-primary'>Upload</button>-->" +
+                                        "<button type='button' class='btn btn-primary'>Upload</button>" +
                                         "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Select</button>" +
                                     "</div>" +
                                 "</div>" +
