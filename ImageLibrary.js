@@ -16,7 +16,7 @@ $.getJSON("setup.json", function(data) {
 //Create new HTML object to store all HTML templates
 ImageLibrary.HTML = {};
 //Individual image HTML
-ImageLibrary.HTML.image = "<img class='col-xs-3' src='{IMAGE_SRC}'/>";
+ImageLibrary.HTML.image = "<img class='{IMAGE_WIDTH}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/>";
 //Button HTML
 ImageLibrary.HTML.button = "<button id='ilBrowseButton' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
@@ -61,7 +61,14 @@ ImageLibrary.loadImages = function(ele) {
             var imageHtml = '<div class="row">';
             //Loop through all of the images and continue to build the HTML
             $.each(data.images, function(index, value) {
-                imageHtml += ImageLibrary.HTML.image.replace('{IMAGE_SRC}', ImageLibrary.setup.ImageDirectory + '/' + value);
+                //Get the HTML for the image and replace all of the placeholder data
+                var image = ImageLibrary.HTML.image;
+                image = image.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + value : '/images'));
+                image = image.replace('{IMAGE_WIDTH}', (ImageLibrary.setup.ImageSize.width ? ImageLibrary.setup.ImageSize.width : 'col-xs-3'));
+                image = image.replace('{IMAGE_HEIGHT}', (ImageLibrary.setup.ImageSize.height ? ImageLibrary.setup.ImageSize.height : '100'));
+
+                //Add the built image HTML to the HTML we have already generated
+                imageHtml += image;
             });
             //Finish off the HTML ready to be added to the modal
             imageHtml += '</div>';
