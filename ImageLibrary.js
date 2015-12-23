@@ -44,15 +44,19 @@ ImageLibrary.HTML.input = "<input type='hidden' name='ImageLibrary' value='' id=
 //Upload image modal
 ImageLibrary.HTML.uploadModal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilUploadModal'>" +
                                     "<div class='modal-dialog modal-lg'>" +
-                                        "<div class='modal-header'>" +
-                                            "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                                            "<h4 class='modal-title'>Upload Image</h4>" +
-                                        "</div>" +
-                                        "<div class='modal-body'>" +
-                                        "</div>" +
-                                        "<div class='modal-footer'>" +
-                                            "<button type='button' class='btn btn-primary' data-dismiss='modal' id='ilUpload'>Close</button>" +
-                                            "<button type='button' class='btn btn-success'>Upload</button>" +
+                                        "<div class='modal-content'>" +
+                                            "<div class='modal-header'>" +
+                                                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                                                "<h4 class='modal-title'>Upload Image</h4>" +
+                                            "</div>" +
+                                            "<div class='modal-body' style='text-align: center;'>" +
+                                                "<button type='button' class='btn btn-primary' onclick='$(\"#ilUploadImageInput\").click()'>Select Image</button>" +
+                                                "<input type='file' id='ilUploadImageInput' style='display: none;'>" +
+                                            "</div>" +
+                                            "<div class='modal-footer'>" +
+                                                "<button type='button' class='btn btn-primary' data-dismiss='modal' id='ilUpload'>Close</button>" +
+                                                "<button type='button' class='btn btn-success' id='ilUploadImageButton'>Upload</button>" +
+                                            "</div>" +
                                         "</div>" +
                                     "</div>" +
                                 "</div>";
@@ -104,7 +108,7 @@ ImageLibrary.loadImages = function(ele) {
             imageHtml += '</div>';
 
             //Display the images in the modal
-            ele.find('.modal-body').append(imageHtml);
+            ele.find('#ilModal .modal-body').append(imageHtml);
         } else {
             alert(data.message);
         }
@@ -142,5 +146,6 @@ ImageLibrary.selectImage = function(image) {
 };
 
 ImageLibrary.uploadImage = function() {
-    
+    $('#ilModal').modal('hide');
+    $('#ilUploadModal').modal('show');
 };
