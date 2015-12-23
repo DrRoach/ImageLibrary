@@ -5,3 +5,8 @@
 .ilImage {
     margin-top: 5px;
 }
+
+#ilUploadPreview {
+    margin-top: 10px;
+    text-align: center;
+}
