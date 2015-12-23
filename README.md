@@ -1,11 +1,15 @@
-Image Library
+Image Library v0.2
 ===
 
 Image Library is a plugin that can be added to your sites so that users can easily select images from a folder and submit them via a form.
 
-Example:
+Library Example:
 
 ![Image Library example](http://imgur.com/E01UGnQ.png)
+
+Upload Example:
+
+![Image upload example](http://imgur.com/myVcMo7.png)
 
 Example Code:
 
@@ -27,7 +31,7 @@ Form Data:
 ```
 
 ###setup.json
-This is the file in which you can customize the plugin. You can set the directory in which to save and get the images from and also set the width and height of the images.
+This is the file in which you can customize the plugin.
 
 Examples:
 
@@ -41,14 +45,20 @@ Add a class to set the width of each image, best to use a bootstrap class.
 ######height
 Set the height of each image in pixels.
 
+#####PreviewImageHeight
+This is the height of the preview image that is shown when the user is selecting a image to upload. You may want this to be different to the library images' height as only one image is display on this page whereas many could be shown on the library. This is a pixel value e.g 200.
+
+#####FileSize
+The max file size of images that are being uploaded. This value is in bytes.
+
 
 ###Current Version
-In version 0.1 the user can select and deselect images and then submit them via a form.
+In version 0.2 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine.
 
 ###Roadmap
 
 ####Version 1.0
 - [x] Select images
-- [ ] Upload images
+- [x] Upload images
 - [ ] Delete images
 - [ ] Basic image editing
