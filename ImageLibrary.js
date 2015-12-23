@@ -33,7 +33,7 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                                     "<div class='modal-body'>" +
                                     "</div>" +
                                     "<div class='modal-footer'>" +
-                                        "<button type='button' class='btn btn-primary'>Upload</button>" +
+                                        "<button type='button' class='btn btn-primary' id='ilUpload'>Upload</button>" +
                                         "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Select</button>" +
                                     "</div>" +
                                 "</div>" +
@@ -41,6 +41,21 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                         "</div>";
 //Form input HTML
 ImageLibrary.HTML.input = "<input type='hidden' name='ImageLibrary' value='' id='ilInput'>";
+//Upload image modal
+ImageLibrary.HTML.uploadModal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilUploadModal'>" +
+                                    "<div class='modal-dialog modal-lg'>" +
+                                        "<div class='modal-header'>" +
+                                            "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                                            "<h4 class='modal-title'>Upload Image</h4>" +
+                                        "</div>" +
+                                        "<div class='modal-body'>" +
+                                        "</div>" +
+                                        "<div class='modal-footer'>" +
+                                            "<button type='button' class='btn btn-primary' data-dismiss='modal' id='ilUpload'>Close</button>" +
+                                            "<button type='button' class='btn btn-success'>Upload</button>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>";
 
 ImageLibrary.create = function(element) {
     //Store the selector for the image library
@@ -53,7 +68,9 @@ ImageLibrary.create = function(element) {
             ImageLibrary.selectImage($(this));
         });
 
-        ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
+        ele.on('click', '#ilUpload', ImageLibrary.uploadImage());
+
+        ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input + ImageLibrary.HTML.uploadModal);
 
         ImageLibrary.loadImages(ele);
     });
@@ -120,4 +137,9 @@ ImageLibrary.selectImage = function(image) {
 
     //Update the selected images input
     $('#ilInput').val(JSON.stringify(ImageLibrary.selected));
+};
+
+ImageLibrary.uploadImage = function() {
+    //Close the current Image Library modal
+    $('#ilModal').modal('show', false);
 };
