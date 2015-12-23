@@ -18,7 +18,7 @@ ImageLibrary.HTML = {};
 //Individual image HTML
 ImageLibrary.HTML.image = "<img class='{IMAGE_WIDTH}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/>";
 //Button HTML
-ImageLibrary.HTML.button = "<button id='ilBrowseButton' data-toggle='modal' data-target='#ilModal'>Browse</button>";
+ImageLibrary.HTML.button = "<button id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
 ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilModal'>" +
                             "<div class='modal-dialog modal-lg'>" +
