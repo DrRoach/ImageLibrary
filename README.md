@@ -5,7 +5,7 @@ Image Library is a plugin that can be added to your sites so that users can easi
 
 Example:
 
-![Image Library example](http://imgur.com/E01UGnQ)
+![Image Library example](http://imgur.com/E01UGnQ.png)
 
 Example Code:
 
