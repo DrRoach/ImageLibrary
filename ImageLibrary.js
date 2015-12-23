@@ -21,7 +21,7 @@ ImageLibrary.HTML = {};
 //Individual image HTML
 ImageLibrary.HTML.image = "<img class='{IMAGE_WIDTH} ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/>";
 //Button HTML
-ImageLibrary.HTML.button = "<button id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
+ImageLibrary.HTML.button = "<button type='button' id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
 ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilModal'>" +
                             "<div class='modal-dialog modal-lg'>" +
@@ -34,11 +34,13 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                                     "</div>" +
                                     "<div class='modal-footer'>" +
                                         "<button type='button' class='btn btn-primary'>Upload</button>" +
-                                        "<button type='button' class='btn btn-success' data-dismiss='modal'>Select</button>" +
+                                        "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Select</button>" +
                                     "</div>" +
                                 "</div>" +
                             "</div>" +
                         "</div>";
+//Form input HTML
+ImageLibrary.HTML.input = "<input type='hidden' name='ImageLibrary' value='' id='ilInput'>";
 
 ImageLibrary.create = function(element) {
     //Store the selector for the image library
@@ -51,7 +53,7 @@ ImageLibrary.create = function(element) {
             ImageLibrary.selectImage($(this));
         });
 
-        ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal);
+        ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
 
         ImageLibrary.loadImages(ele);
     });
@@ -59,7 +61,7 @@ ImageLibrary.create = function(element) {
 
 ImageLibrary.loadImages = function(ele) {
     //Send post request to get all of the images
-    $.post('/ImageLibrary.php', {
+    $.post('ImageLibrary.php', {
         function: 'getImages',
         setup: ImageLibrary.setup
     }, function(data) {
@@ -91,7 +93,9 @@ ImageLibrary.loadImages = function(ele) {
 };
 
 ImageLibrary.selectImage = function(image) {
+    //Get the ID of the image that has been selected
     var ilID = image.attr('data-ilid');
+
     //Image is already selected so deselect it
     if (ImageLibrary.selected.indexOf(ilID) >= 0) {
         //Image is selected so remove the class
@@ -104,4 +108,16 @@ ImageLibrary.selectImage = function(image) {
         //Add the image to the selected images array
         ImageLibrary.selected.push(ilID);
     }
+
+    //Change the text of the select button to show the number of selected images
+    if (ImageLibrary.selected.length == 0) {
+        $('#ilSelectButton').text('Select');
+        $('#ilBrowseButton').text('Browse');
+    } else {
+        $('#ilSelectButton').text((ImageLibrary.selected.length == 1 ? 'Select 1 image' : 'Select ' + ImageLibrary.selected.length + ' images'));
+        $('#ilBrowseButton').text((ImageLibrary.selected.length == 1 ? '1 image selected' : ImageLibrary.selected.length + ' images selected'));
+    }
+
+    //Update the selected images input
+    $('#ilInput').val(JSON.stringify(ImageLibrary.selected));
 };
