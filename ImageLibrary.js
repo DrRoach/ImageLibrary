@@ -9,6 +9,9 @@ ImageLibrary.setup = null;
 //Images array to hold all of the selected images
 ImageLibrary.selected = [];
 
+//Library element selector
+ImageLibrary.selector = null;
+
 //Load the data from the setup.json file
 $.getJSON("setup.json", function(data) {
     ImageLibrary.setup = data;
@@ -33,7 +36,7 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                                     "<div class='modal-body'>" +
                                     "</div>" +
                                     "<div class='modal-footer'>" +
-                                        "<!--<button type='button' class='btn btn-primary'>Upload</button>-->" +
+                                        "<button type='button' class='btn btn-primary' id='ilUpload'>Upload</button>" +
                                         "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Select</button>" +
                                     "</div>" +
                                 "</div>" +
@@ -41,10 +44,31 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                         "</div>";
 //Form input HTML
 ImageLibrary.HTML.input = "<input type='hidden' name='ImageLibrary' value='' id='ilInput'>";
+//Upload image modal
+ImageLibrary.HTML.uploadModal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilUploadModal'>" +
+                                    "<div class='modal-dialog modal-lg'>" +
+                                        "<div class='modal-content'>" +
+                                            "<div class='modal-header'>" +
+                                                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                                                "<h4 class='modal-title'>Upload Image</h4>" +
+                                            "</div>" +
+                                            "<div class='modal-body' style='text-align: center;'>" +
+                                                "<button type='button' class='btn btn-primary' onclick='$(\"#ilUploadImageInput\").click()'>Select Image</button>" +
+                                                "<div class='row'><span id='ilUploadPreview' class='col-xs-12'></span></div>" +
+                                                "<form action='' method='post' enctype='multipart/form-data' id='ilUploadForm'><input type='file' id='ilUploadImageInput' name='ilFile' style='display: none;'></form>" +
+                                            "</div>" +
+                                            "<div class='modal-footer'>" +
+                                                "<button type='button' class='btn btn-primary' data-dismiss='modal' id='ilUpload'>Close</button>" +
+                                                "<button type='button' class='btn btn-success' id='ilUploadImageButton'>Upload</button>" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>";
 
 ImageLibrary.create = function(element) {
     //Store the selector for the image library
     var ele = $(element);
+    ImageLibrary.selector = ele;
 
     //Add event listener on setupLoaded so that we know the setup file has been loaded
     $(document).on('setupLoaded', function() {
@@ -53,7 +77,12 @@ ImageLibrary.create = function(element) {
             ImageLibrary.selectImage($(this));
         });
 
+        ele.on('click', '#ilUpload', function() {
+            ImageLibrary.uploadImage();
+        });
+
         ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
+        ele.parent('form').parent().append(ImageLibrary.HTML.uploadModal);
 
         ImageLibrary.loadImages(ele);
     });
@@ -85,7 +114,7 @@ ImageLibrary.loadImages = function(ele) {
             imageHtml += '</div>';
 
             //Display the images in the modal
-            ele.find('.modal-body').append(imageHtml);
+            ele.find('#ilModal .modal-body').html(imageHtml);
         } else {
             alert(data.message);
         }
@@ -120,4 +149,60 @@ ImageLibrary.selectImage = function(image) {
 
     //Update the selected images input
     $('#ilInput').val(JSON.stringify(ImageLibrary.selected));
+};
+
+ImageLibrary.uploadImage = function() {
+    //Add listener to upload button
+    $('body').on('click', '#ilUploadImageButton', function() {
+        //Code to be ran when the form is submitted
+        $('#ilUploadForm').submit(function (e) {
+            //Create the formdata object
+            var formdata = new FormData(this);
+
+            //Send ajax request to upload the new image
+            $.ajax({
+                url: "ImageLibrary.php",
+                type: "POST",
+                data: formdata,
+                contentType: false,
+                cache: false,
+                processData:false,
+                success: function(data)
+                {
+                    //If there was an error, display an error message
+                    if (data.success == false) {
+                        alert(data.message);
+                    } else {
+                        //Reload all of the images in the image library
+                        /**
+                         * TODO: Find a better way to do this where all of the images don't need to be reloaded repeatedly
+                         */
+                        ImageLibrary.loadImages(ImageLibrary.selector);
+
+                        //Hide the upload modal and show the library modal
+                        $('#ilModal').modal('show');
+                        $('#ilUploadModal').modal('hide');
+                    }
+                }
+            });
+            //Don't reload the page
+            e.preventDefault();
+        });
+        //Submit the form so the above AJAX request is sent
+        $('#ilUploadForm').submit();
+    });
+
+    //Hide the library modal and show the upload modal
+    $('#ilModal').modal('hide');
+    $('#ilUploadModal').modal('show');
+
+    //Add a change listener to the file input to display the file name on the upload page
+    $('#ilUploadImageInput').on('change', function() {
+        //Create a file reader and display a preview of the image
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#ilUploadPreview').html('<img src="' + e.target.result + '" class="col-xs-offset-4 col-xs-4" height="' + (ImageLibrary.setup.PreviewImageHeight ? ImageLibrary.setup.PreviewImageHeight : '200') + '">');
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
 };
