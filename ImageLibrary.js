@@ -22,7 +22,7 @@ $.getJSON("setup.json", function(data) {
 //Create new HTML object to store all HTML templates
 ImageLibrary.HTML = {};
 //Individual image HTML
-ImageLibrary.HTML.image = "<div class='{IMAGE_WIDTH}'><img class='col-xs-12 ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/><span class='fa fa-times iLdeleteImage'></span></div>";
+ImageLibrary.HTML.image = "<div class='{IMAGE_WIDTH}'><img class='col-xs-12 ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/><span class='fa fa-times iLdeleteImage' data-iLimageId='{IL_ID}'></span></div>";
 //Button HTML
 ImageLibrary.HTML.button = "<button type='button' id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
@@ -77,8 +77,14 @@ ImageLibrary.create = function(element) {
             ImageLibrary.selectImage($(this));
         });
 
+        //Add upload button click listener
         ele.on('click', '#ilUpload', function() {
             ImageLibrary.uploadImage();
+        });
+
+        //Add delete button click listener
+        ele.on('click', '.iLdeleteImage', function() {
+            ImageLibrary.deleteImage($(this));
         });
 
         ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
@@ -106,6 +112,8 @@ ImageLibrary.loadImages = function(ele) {
                 image = image.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + value : '/images'));
                 image = image.replace('{IMAGE_WIDTH}', (ImageLibrary.setup.ImageSize.width ? ImageLibrary.setup.ImageSize.width : 'col-xs-3'));
                 image = image.replace('{IMAGE_HEIGHT}', (ImageLibrary.setup.ImageSize.height ? ImageLibrary.setup.ImageSize.height : '100'));
+                //Do this step twice, once for image, once for delete
+                image = image.replace('{IL_ID}', value);
                 image = image.replace('{IL_ID}', value);
 
                 //Add a row div every 4 images
@@ -219,3 +227,26 @@ ImageLibrary.uploadImage = function() {
         reader.readAsDataURL(this.files[0]);
     });
 };
+
+ImageLibrary.deleteImage = function(self) {
+    //Make sure that the user wants to delete the image
+    if(confirm('Are you sure that you want to delete this image?')) {
+        //Send AJAX request to delete image
+        $.post('ImageLibrary.php', {
+            function: 'delete',
+            //Combine the setup json obj to pass the image ID
+            setup: $.extend(ImageLibrary.setup, {'imageId': self.attr('data-iLimageId')})
+        }, function(data) {
+            //If there was an error, display an error message
+            if (data.success == false) {
+                alert(data.message);
+            } else {
+                //Reload all of the images in the image library
+                /**
+                 * TODO: Find a better way to do this where all of the images don't need to be reloaded repeatedly
+                 */
+                ImageLibrary.loadImages(ImageLibrary.selector);
+            }
+        });
+    }
+}

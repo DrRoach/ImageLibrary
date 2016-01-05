@@ -134,3 +134,53 @@ function getDir($setup) {
 
     return $dir;
 }
+
+function delete($setup) {
+    $id = htmlentities($setup['imageId']);
+
+    $extension = explode('.', $id);
+    $extension = $extension[sizeof($extension) - 1];
+
+    //Check to make sure that the image has a valid extension
+    switch ($extension) {
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+            break;
+        default:
+            echo json_encode([
+                'success' => false,
+                'message' => 'The image you tried to delete isn\'t valid. It must be either JPG or PNG.'
+            ]);
+            exit;
+    }
+
+    //Get the directory to get the images from
+    $dir = getDir($setup);
+
+    //Make sure that it is actually a directory
+    if (!is_dir($dir)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'The Image Directory doesn\'t exist. Please create it.'
+        ]);
+        exit;
+    }
+
+    //Check to make sure that the image actually exists
+    if (file_exists($dir . '/' . $id)) {
+        //Delete the file
+        unlink($dir . '/' . $id);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Image successfully deleted.'
+        ]);
+        exit;
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'That image could not be found.'
+        ]);
+        exit;
+    }
+}
