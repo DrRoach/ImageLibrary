@@ -20,7 +20,7 @@ $functions = get_defined_functions();
 $functions = $functions['user'];
 
 //Check to see if the requested function is in this file to prevent remote code execution
-if (!in_array($function, $functions) || empty($function)) {
+if (!in_array(strtolower($function), $functions) || empty($function)) {
     echo json_encode([
         'success' => false,
         'message' => 'The requested function could not be found.'
