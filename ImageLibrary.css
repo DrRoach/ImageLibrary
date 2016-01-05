@@ -4,9 +4,20 @@
 
 .ilImage {
     margin-top: 5px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #ilUploadPreview {
     margin-top: 10px;
     text-align: center;
+}
+
+.iLdeleteImage {
+    z-index: 100;
+    margin-top: 10px;
+    position: absolute;
+    margin-left: -25px;
+    color: #e74c3c;
+    cursor: pointer;
 }

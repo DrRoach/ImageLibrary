@@ -22,7 +22,7 @@ $.getJSON("setup.json", function(data) {
 //Create new HTML object to store all HTML templates
 ImageLibrary.HTML = {};
 //Individual image HTML
-ImageLibrary.HTML.image = "<img class='{IMAGE_WIDTH} ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/>";
+ImageLibrary.HTML.image = "<div class='{IMAGE_WIDTH}'><img class='col-xs-12 ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/><span class='fa fa-times iLdeleteImage'></span></div>";
 //Button HTML
 ImageLibrary.HTML.button = "<button type='button' id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
@@ -102,16 +102,29 @@ ImageLibrary.loadImages = function(ele) {
             $.each(data.images, function(index, value) {
                 //Get the HTML for the image and replace all of the placeholder data
                 var image = ImageLibrary.HTML.image;
+
                 image = image.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + value : '/images'));
                 image = image.replace('{IMAGE_WIDTH}', (ImageLibrary.setup.ImageSize.width ? ImageLibrary.setup.ImageSize.width : 'col-xs-3'));
                 image = image.replace('{IMAGE_HEIGHT}', (ImageLibrary.setup.ImageSize.height ? ImageLibrary.setup.ImageSize.height : '100'));
                 image = image.replace('{IL_ID}', value);
 
+                //Add a row div every 4 images
+                if (index % 4 == 0 && index != 0) {
+                    //If this is the 4th image, close the first div
+                    if (index == 4) {
+                        imageHtml += '</div>';
+                    }
+                    imageHtml += '<div class="row">';
+                }
+
                 //Add the built image HTML to the HTML we have already generated
                 imageHtml += image;
+
+                //Add a row div every 4 images
+                if (index % 4 == 0 && index != 0) {
+                    imageHtml += '</div>';
+                }
             });
-            //Finish off the HTML ready to be added to the modal
-            imageHtml += '</div>';
 
             //Display the images in the modal
             ele.find('#ilModal .modal-body').html(imageHtml);
