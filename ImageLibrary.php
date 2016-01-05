@@ -15,6 +15,19 @@ if (empty($_POST['setup'])) {
     $setup = $_POST['setup'];
 }
 
+//Get a list of the functions in this file
+$functions = get_defined_functions();
+$functions = $functions['user'];
+
+//Check to see if the requested function is in this file to prevent remote code execution
+if (!in_array($function, $functions) || empty($function)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'The requested function could not be found.'
+    ]);
+    exit;
+}
+
 //Call the required function
 $function($setup);
 
