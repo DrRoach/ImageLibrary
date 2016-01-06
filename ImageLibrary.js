@@ -64,6 +64,29 @@ ImageLibrary.HTML.uploadModal = "<div class='modal fade' tabindex='-1' role='dia
                                         "</div>" +
                                     "</div>" +
                                 "</div>";
+//Edit image modal
+ImageLibrary.HTML.editModal = "<div class='modal fade' tabindex='-1' role='dialog' id='ilEditModal'>" +
+                                "<div class='modal-dialog modal-lg'>" +
+                                    "<div class='modal-content'>" +
+                                        "<div class='modal-header'>" +
+                                            "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                                            "<h4 class='modal-title'>Edit Image</h4>" +
+                                        "</div>" +
+                                        "<div class='modal-body'>" +
+                                            "BODY" +
+                                        "</div>" +
+                                        "<div class='modal-footer'>" +
+                                            "<button type='button' class='btn btn-primary' data-dismiss='modal'>Done</button>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>";
+//Edit image HTML
+ImageLibrary.HTML.editImage = "<div class='row'>" +
+                                "<div class='{IMAGE_WIDTH}'>" +
+                                    "<img class='col-xs-12' data-ilID='{IL_ID}' src='{IMAGE_SRC}'/>" +
+                                "</div>" +
+                            "</div>";
 
 ImageLibrary.create = function(element) {
     //Store the selector for the image library
@@ -87,8 +110,13 @@ ImageLibrary.create = function(element) {
             ImageLibrary.deleteImage($(this));
         });
 
+        //Add edit button click listener
+        ele.on('click', '.iLeditImage', function() {
+            ImageLibrary.editImage($(this));
+        });
+
         ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
-        ele.parent('form').parent().append(ImageLibrary.HTML.uploadModal);
+        ele.parent('form').parent().append(ImageLibrary.HTML.uploadModal + ImageLibrary.HTML.editModal);
 
         ImageLibrary.loadImages(ele);
     });
@@ -131,7 +159,6 @@ ImageLibrary.loadImages = function(ele) {
 
                 //Add a row div every 4 images
                 if (index % 4 == 0 && (index != 0 && index != 4)) {
-                    console.log('here');
                     imageHtml += '</div>';
                 }
             });
@@ -278,4 +305,20 @@ ImageLibrary.deleteImage = function(self) {
             }
         });
     }
+};
+
+ImageLibrary.editImage = function(self) {
+    //Get the id of the image that has been clicked
+    var id = self.attr('data-iLimageId');
+
+    //Hide the library modal and show the edit modal
+    $('#ilModal').modal('hide');
+    $('#ilEditModal').modal('show');
+
+    //Create the image HTML
+    var image = ImageLibrary.HTML.editImage.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + id : '/images'));
+
+    $('#ilEditModal .modal-body').html(image);
+
+    console.log(id);
 };
