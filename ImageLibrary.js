@@ -129,7 +129,8 @@ ImageLibrary.loadImages = function(ele) {
                 imageHtml += image;
 
                 //Add a row div every 4 images
-                if (index % 4 == 0 && index != 0) {
+                if (index % 4 == 0 && (index != 0 && index != 4)) {
+                    console.log('here');
                     imageHtml += '</div>';
                 }
             });
