@@ -53,12 +53,12 @@ The max file size of images that are being uploaded. This value is in bytes.
 
 
 ###Current Version
-In version 0.2 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine.
+In version 0.3 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine. They can also delete any previously uploaded images.
 
 ###Roadmap
 
 ####Version 1.0
 - [x] Select images
 - [x] Upload images
-- [ ] Delete images
+- [x] Delete images
 - [ ] Basic image editing
