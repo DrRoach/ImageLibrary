@@ -57,6 +57,9 @@ The colour of the border to be added to images when they are selected in the lib
 #####DeleteImageCrossColour
 The colour of the delete image cross displayed in the top right of the image. The value is any valid CSS colour.
 
+#####EditImageIconColour
+The colour of the edit image pencil displayed in the top left of the image. The value is any valid CSS colour.
+
 
 ###Current Version
 In version 0.3.2 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine. They can also delete any previously uploaded images.

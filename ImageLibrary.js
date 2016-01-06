@@ -139,13 +139,17 @@ ImageLibrary.loadImages = function(ele) {
             //Display the images in the modal
             ele.find('#ilModal .modal-body').html(imageHtml);
 
-            //Check to see if custom colours have been entered for selected image border and delete cross
+            //Check to see if any custom colours have been entered
             if (ImageLibrary.setup.imageBorderColour != null) {
                 $('.selected').css('border', '5px solid ' + ImageLibrary.setup.imageBorderColour);
             }
 
             if (ImageLibrary.setup.deleteImageCrossColour != null) {
                 $('.iLdeleteImage').css('color', ImageLibrary.setup.deleteImageCrossColour);
+            }
+
+            if (ImageLibrary.setup.editImageIconColour != null) {
+                $('.iLeditImage').css('color', ImageLibrary.setup.editImageIconColour);
             }
         } else {
             alert(data.message);
