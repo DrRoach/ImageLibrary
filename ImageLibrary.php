@@ -36,13 +36,7 @@ function getImages($setup) {
     $dir = getDir($setup);
 
     //Make sure that it is actually a directory
-    if (!is_dir($dir)) {
-        echo json_encode([
-            'success' => false,
-            'message' => 'The Image Directory doesn\'t exist. Please create it.'
-        ]);
-        exit;
-    }
+    checkImageDirectoryExists($dir);
 
     //Get all of the files from the given directory
     $files = scandir($dir);
@@ -71,18 +65,7 @@ function getImages($setup) {
 
 function upload($data) {
     //Check to make sure that the image has a valid extension
-    switch ($data['type']) {
-        case 'image/png':
-        case 'image/jpg':
-        case 'image/jpeg':
-            break;
-        default:
-            echo json_encode([
-                'success' => false,
-                'message' => 'The image you tried to upload isn\'t valid. It must be either JPG or PNG.'
-            ]);
-            exit;
-    }
+    checkExtension($data['name']);
 
     //Get the max file size, default is 250kb
     $fileSize = json_decode(file_get_contents('setup.json'))->FileSize ? : 250000;
@@ -102,7 +85,7 @@ function upload($data) {
     $dir = getDir(['ImageDirectory' => $imageDirectory]);
 
     //Check to make sure that the file doesn't exist before trying to upload it
-    if (file_exists($dir . '/' . $data['name'])) {
+    if (imageExists($dir . '/' . $data['name'])) {
         echo json_encode([
             'success' => false,
             'message' => 'An image with that name already exists.'
@@ -133,4 +116,71 @@ function getDir($setup) {
     $dir = __DIR__ . str_replace('..', '', $dir);
 
     return $dir;
+}
+
+function delete($setup) {
+    //Get the image ID
+    $id = htmlentities($setup['imageId']);
+
+    //Check the file extension to make sure that it's valid
+    checkExtension($id);
+
+    //Get the directory to get the images from
+    $dir = getDir($setup);
+
+    //Make sure that it is actually a directory
+    checkImageDirectoryExists($dir);
+
+    //Check to make sure that the image actually exists
+    if (imageExists($dir . '/' . $id)) {
+        //Delete the file
+        unlink($dir . '/' . $id);
+        echo json_encode([
+            'success' => true,
+            'message' => 'Image successfully deleted.'
+        ]);
+        exit;
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'That image could not be found.'
+        ]);
+        exit;
+    }
+}
+
+function checkExtension($image) {
+    //Get the file extension
+    $extension = explode('.', $image);
+    $extension = $extension[sizeof($extension) - 1];
+
+    //Check to make sure that the image has a valid extension
+    switch ($extension) {
+        case 'png':
+        case 'jpg':
+        case 'jpeg':
+            break;
+        default:
+            echo json_encode([
+                'success' => false,
+                'message' => 'The image you tried to delete isn\'t valid. It must be either JPG or PNG.'
+            ]);
+            exit;
+    }
+
+    return true;
+}
+
+function checkImageDirectoryExists($dir) {
+    if (!is_dir($dir)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'The Image Directory doesn\'t exist. Please create it.'
+        ]);
+        exit;
+    }
+}
+
+function imageExists($image) {
+    return file_exists($image);
 }
