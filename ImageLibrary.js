@@ -22,7 +22,7 @@ $.getJSON("setup.json", function(data) {
 //Create new HTML object to store all HTML templates
 ImageLibrary.HTML = {};
 //Individual image HTML
-ImageLibrary.HTML.image = "<div class='{IMAGE_WIDTH}'><img class='col-xs-12 ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/><span class='fa fa-times iLdeleteImage' data-iLimageId='{IL_ID}'></span></div>";
+ImageLibrary.HTML.image = "<div class='{IMAGE_WIDTH}'><span class='fa fa-pencil iLeditImage' data-iLimageId='{IL_ID}'></span><img class='col-xs-12 ilImage' data-ilID='{IL_ID}' height='{IMAGE_HEIGHT}' src='{IMAGE_SRC}'/><span class='fa fa-times iLdeleteImage' data-iLimageId='{IL_ID}'></span></div>";
 //Button HTML
 ImageLibrary.HTML.button = "<button type='button' id='ilBrowseButton' class='btn btn-primary' data-toggle='modal' data-target='#ilModal'>Browse</button>";
 //Image modal HTML
@@ -112,7 +112,8 @@ ImageLibrary.loadImages = function(ele) {
                 image = image.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + value : '/images'));
                 image = image.replace('{IMAGE_WIDTH}', (ImageLibrary.setup.ImageSize.width ? ImageLibrary.setup.ImageSize.width : 'col-xs-3'));
                 image = image.replace('{IMAGE_HEIGHT}', (ImageLibrary.setup.ImageSize.height ? ImageLibrary.setup.ImageSize.height : '100'));
-                //Do this step twice, once for image, once for delete
+                //Do this step three times, once for image, once for edit, once for delete
+                image = image.replace('{IL_ID}', value);
                 image = image.replace('{IL_ID}', value);
                 image = image.replace('{IL_ID}', value);
 
@@ -273,4 +274,4 @@ ImageLibrary.deleteImage = function(self) {
             }
         });
     }
-}
+};

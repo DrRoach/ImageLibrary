@@ -17,7 +17,16 @@
     z-index: 100;
     margin-top: 10px;
     position: absolute;
-    margin-left: -25px;
+    margin-left: -20px;
     color: #e74c3c;
+    cursor: pointer;
+}
+
+.iLeditImage {
+    z-index: 100;
+    margin-top: 10px;
+    position: absolute;
+    margin-left: 10px;
+    color: #ecf0f1;
     cursor: pointer;
 }
