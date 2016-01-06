@@ -211,7 +211,7 @@ ImageLibrary.uploadImage = function() {
 
                 //Don't reload the page
                 e.preventDefault();
-            });
+            }));
 
             //Submit the form so the above AJAX request is sent
             $('#ilUploadForm').submit();
