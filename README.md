@@ -1,4 +1,4 @@
-Image Library v0.3.1
+Image Library v0.3.2
 ===
 
 Image Library is a plugin that can be added to your sites so that users can easily select images from a folder and submit them via a form.
@@ -51,9 +51,15 @@ This is the height of the preview image that is shown when the user is selecting
 #####FileSize
 The max file size of images that are being uploaded. This value is in bytes.
 
+#####ImageBorderColour
+The colour of the border to be added to images when they are selected in the library. The value is any valid CSS colour.
+
+#####DeleteImageCrossColour
+The colour of the delete image cross displayed in the top right of the image. The value is any valid CSS colour.
+
 
 ###Current Version
-In version 0.3 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine. They can also delete any previously uploaded images.
+In version 0.3.2 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine. They can also delete any previously uploaded images.
 
 ###Roadmap
 

@@ -137,6 +137,15 @@ ImageLibrary.loadImages = function(ele) {
 
             //Display the images in the modal
             ele.find('#ilModal .modal-body').html(imageHtml);
+
+            //Check to see if custom colours have been entered for selected image border and delete cross
+            if (ImageLibrary.setup.imageBorderColour != null) {
+                $('.selected').css('border', '5px solid ' + ImageLibrary.setup.imageBorderColour);
+            }
+
+            if (ImageLibrary.setup.deleteImageCrossColour != null) {
+                $('.iLdeleteImage').css('color', ImageLibrary.setup.deleteImageCrossColour);
+            }
         } else {
             alert(data.message);
         }
@@ -151,11 +160,19 @@ ImageLibrary.selectImage = function(image) {
     if (ImageLibrary.selected.indexOf(ilID) >= 0) {
         //Image is selected so remove the class
         image.removeClass('selected');
+        //Remove custom border if one has been set in the setup file
+        if (ImageLibrary.setup.imageBorderColour != null) {
+            image.css('border', '0');
+        }
         //Remove the image from the selected images array
         ImageLibrary.selected.splice(ImageLibrary.selected.indexOf(ilID), 1);
     } else {
         //Image isn't selected so add the class
         image.addClass('selected');
+        //Change the colour of the border if a custom colour has been set
+        if (ImageLibrary.setup.imageBorderColour != null) {
+            image.css('border', '5px solid ' + ImageLibrary.setup.imageBorderColour);
+        }
         //Add the image to the selected images array
         ImageLibrary.selected.push(ilID);
     }
