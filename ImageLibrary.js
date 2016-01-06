@@ -37,7 +37,7 @@ ImageLibrary.HTML.modal = "<div class='modal fade' tabindex='-1' role='dialog' i
                                     "</div>" +
                                     "<div class='modal-footer'>" +
                                         "<button type='button' class='btn btn-primary' id='ilUpload'>Upload</button>" +
-                                        "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Select</button>" +
+                                        "<button type='button' class='btn btn-success' data-dismiss='modal' id='ilSelectButton'>Done</button>" +
                                     "</div>" +
                                 "</div>" +
                             "</div>" +
@@ -161,7 +161,7 @@ ImageLibrary.selectImage = function(image) {
 
     //Change the text of the select button to show the number of selected images
     if (ImageLibrary.selected.length == 0) {
-        $('#ilSelectButton').text('Select');
+        $('#ilSelectButton').text('Done');
         $('#ilBrowseButton').text('Browse');
     } else {
         $('#ilSelectButton').text((ImageLibrary.selected.length == 1 ? 'Select 1 image' : 'Select ' + ImageLibrary.selected.length + ' images'));
