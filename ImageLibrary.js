@@ -172,46 +172,52 @@ ImageLibrary.selectImage = function(image) {
     $('#ilInput').val(JSON.stringify(ImageLibrary.selected));
 };
 
+//Variable to make sure that the upload listener is only added once
+var uploadListenerLoaded = false;
 ImageLibrary.uploadImage = function() {
     //Add listener to upload button
-    $('body').on('click', '#ilUploadImageButton', function() {
-        //Code to be ran when the form is submitted
-        $('#ilUploadForm').submit(function (e) {
-            //Create the formdata object
-            var formdata = new FormData(this);
+    if (uploadListenerLoaded == false) {
+        $('body').on('click', '#ilUploadImageButton', function () {
+            //Code to be ran when the form is submitted
+            $('#ilUploadForm').off('submit').on('submit', (function (e) {
+                //Create the formdata object
+                var formdata = new FormData(this);
 
-            //Send ajax request to upload the new image
-            $.ajax({
-                url: "ImageLibrary.php",
-                type: "POST",
-                data: formdata,
-                contentType: false,
-                cache: false,
-                processData:false,
-                success: function(data)
-                {
-                    //If there was an error, display an error message
-                    if (data.success == false) {
-                        alert(data.message);
-                    } else {
-                        //Reload all of the images in the image library
-                        /**
-                         * TODO: Find a better way to do this where all of the images don't need to be reloaded repeatedly
-                         */
-                        ImageLibrary.loadImages(ImageLibrary.selector);
+                //Send ajax request to upload the new image
+                $.ajax({
+                    url: "ImageLibrary.php",
+                    type: "POST",
+                    data: formdata,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        //If there was an error, display an error message
+                        if (data.success == false) {
+                            alert(data.message);
+                        } else {
+                            //Reload all of the images in the image library
+                            /**
+                             * TODO: Find a better way to do this where all of the images don't need to be reloaded repeatedly
+                             */
+                            ImageLibrary.loadImages(ImageLibrary.selector);
 
-                        //Hide the upload modal and show the library modal
-                        $('#ilModal').modal('show');
-                        $('#ilUploadModal').modal('hide');
+                            //Hide the upload modal and show the library modal
+                            $('#ilModal').modal('show');
+                            $('#ilUploadModal').modal('hide');
+                        }
                     }
-                }
+                });
+
+                //Don't reload the page
+                e.preventDefault();
             });
-            //Don't reload the page
-            e.preventDefault();
+
+            //Submit the form so the above AJAX request is sent
+            $('#ilUploadForm').submit();
         });
-        //Submit the form so the above AJAX request is sent
-        $('#ilUploadForm').submit();
-    });
+        uploadListenerLoaded = true;
+    }
 
     //Hide the library modal and show the upload modal
     $('#ilModal').modal('hide');
