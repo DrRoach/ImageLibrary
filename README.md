@@ -1,4 +1,4 @@
-Image Library v0.2
+Image Library v0.3.1
 ===
 
 Image Library is a plugin that can be added to your sites so that users can easily select images from a folder and submit them via a form.
