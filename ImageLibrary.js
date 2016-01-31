@@ -116,7 +116,7 @@ ImageLibrary.create = function(element) {
         });
 
         ele.html(ImageLibrary.HTML.button + ImageLibrary.HTML.modal + ImageLibrary.HTML.input);
-        ele.parent('form').parent().append(ImageLibrary.HTML.uploadModal + ImageLibrary.HTML.editModal);
+        ele.parent().append(ImageLibrary.HTML.uploadModal + ImageLibrary.HTML.editModal);
 
         ImageLibrary.loadImages(ele);
     });
@@ -318,6 +318,7 @@ ImageLibrary.editImage = function(self) {
     //Create the image HTML
     var image = ImageLibrary.HTML.editImage.replace('{IMAGE_SRC}', (ImageLibrary.setup.ImageDirectory ? ImageLibrary.setup.ImageDirectory + '/' + id : '/images'));
 
+    //Add the image to the edit modal
     $('#ilEditModal .modal-body').html(image);
 
     console.log(id);
