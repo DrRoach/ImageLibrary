@@ -30,40 +30,40 @@ Form Data:
 "["image1.jpg",image5.jpg","bestImage.jpg"]"
 ```
 
-###setup.json
+### setup.json
 This is the file in which you can customize the plugin.
 
 Examples:
 
-#####ImageDirectory
+##### ImageDirectory
 The directory in which to get images from and where to save them.
 
-#####ImageSize
-######width
+##### ImageSize
+###### width
 Add a class to set the width of each image, best to use a bootstrap class.
 
-######height
+###### height
 Set the height of each image in pixels.
 
-#####PreviewImageHeight
+##### PreviewImageHeight
 This is the height of the preview image that is shown when the user is selecting a image to upload. You may want this to be different to the library images' height as only one image is display on this page whereas many could be shown on the library. This is a pixel value e.g 200.
 
-#####FileSize
+##### FileSize
 The max file size of images that are being uploaded. This value is in bytes.
 
-#####ImageBorderColour
+##### ImageBorderColour
 The colour of the border to be added to images when they are selected in the library. The value is any valid CSS colour.
 
-#####DeleteImageCrossColour
+##### DeleteImageCrossColour
 The colour of the delete image cross displayed in the top right of the image. The value is any valid CSS colour.
 
 
-###Current Version
+### Current Version
 In version 0.3.2 the user can select and deselect images and then submit them via a form. They can also upload new images from their machine. They can also delete any previously uploaded images.
 
-###Roadmap
+### Roadmap
 
-####Version 1.0
+#### Version 1.0
 - [x] Select images
 - [x] Upload images
 - [x] Delete images
